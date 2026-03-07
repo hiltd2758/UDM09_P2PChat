@@ -1,7 +1,9 @@
 # P2P Chat Application
 **Project Code:** UDM_09
-**Class:** [012012301305]
-**Group:** [09]
+
+**Class:** 012012301305
+
+**Group:** 09
 
 ## Tech Stack
 - Language: Python 3.13
@@ -10,7 +12,7 @@
 - IDE: VS Code
 
 ## Project Structure
-\```
+```
 Code/P2PChat/
 ├── network/
 │   └── network_manager.py
@@ -21,11 +23,11 @@ Code/P2PChat/
 │   ├── chat_message.py
 │   └── connection_state.py
 └── main.py
-\```
+```
 
 ## How to Run
-\```bash
+```bash
 cd Code/P2PChat
 python main.py
-\```
 ```
+
