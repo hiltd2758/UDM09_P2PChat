@@ -17,38 +17,57 @@ git clone https://github.com/hiltd2758/UDM09_P2PChat.git
 cd UDM09_P2PChat
 code .
 ```
+## P1
+git checkout -b feature/issue1-network
 
-### 2. kiểm tra branch
-```bash
-git branch -a                # Xem tất cả branch (local + remote)
-git branch                   # Chỉ branch local
+## P2
+git checkout -b feature/issue2-threading
 
-# Pull code mới nhất từ main (default branch)
-git checkout main
-git pull origin main
-```
+## P3
+git checkout -b feature/issue3-config-ui
 
-### 3. Branch (ví dụ: feature/chat-ui)
-```bash
-git checkout -b feature/chat-ui
-```
+## P4
+git checkout -b feature/issue4-chat-ui
 
-### 4. Code xong → add → commit → push
-```bash
-# Kiểm tra thay đổi
+## P5a
+git checkout -b feature/issue5-framing
+
+## P5b
+git checkout -b feature/issue5-heartbeat
+
+## P6a
+git checkout -b feature/issue6-history
+
+## P6b
+git checkout -b feature/issue6-queue
+
+## P6c
+git checkout -b feature/issue6-app
+
+# Quy trình làm hàng ngày
+
+## 1. Viết code vào file của mình
+
+## 2. Kiểm tra thay đổi
 git status
 
-# Add file 
-git add .
-# Hoặc add cụ thể:
-# git add Code/P2PChat/views/ Code/P2PChat/main.py requirements.txt
+## 3. Thêm file vào staging
+git add ten_file.py
 
-# Commit với message rõ ràng
-git commit -m "context"
+## 4. Commit với message rõ ràng
+git commit -m "feat: hoàn thành encode_frame và decode_frame"
 
-# Push branch lên GitHub (lần đầu push branch mới cần -u)
-git push -u origin feature/chat-ui
-# Lần sau chỉ cần:
-# git push
-```
+## 5. Push lên GitHub
+git push origin feature/issue5-framing
+
+### Khi xong — Tạo Pull Request
+
+1. Vào GitHub → repo → tab Pull Requests
+2. Bấm "New Pull Request"
+3. base: main ← compare: branch của mình
+4. Tiêu đề: "context"
+5. Mô tả: làm gì
+6. Bấm "Create Pull Request"
+7. review và merge
+
 
