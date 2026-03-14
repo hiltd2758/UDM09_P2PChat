@@ -3,7 +3,9 @@ import threading
 import protocol
 import ipaddress
 IP = input("Nhap dia chi can ket noi den: ")
-if not ipaddress.ip_address(IP):
+try:
+    ipaddress.ip_address(IP)
+except ValueError:
     IP = "127.0.0.1"
 PORT = int(input("Nhap PORT: "))
 if PORT < 0 and PORT > 65535:

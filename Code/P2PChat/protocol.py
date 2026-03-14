@@ -2,10 +2,10 @@ import socket
 def recv_exact(sock,n):
     data = b""
     while len(data) < n:
-        Chunk = sock.recv(n-len(data))
-        if not Chunk:
+        chunk = sock.recv(n-len(data))
+        if not chunk:
             return None
-        data += Chunk
+        data += chunk
     return data
 def read_msg(sock):
     header = recv_exact(sock,4)
