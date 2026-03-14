@@ -1,40 +1,37 @@
 import socket
-
-HOST = '127.0.0.1'  # IP của máy host cần kết nối tới
-PORT = 50000        
-
-# tạo socket
-client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-# kết nối tới host
-# connect() = chủ động gọi sang host
-# host dùng accept() = thụ động chờ
-print(f"kết nối tới {HOST}:{PORT}...")
+import threading
+import protocol
+import ipaddress
+IP = input("Nhap dia chi can ket noi den: ")
 try:
-    client_socket.connect((HOST, PORT))
-    print("sucess")
+    ipaddress.ip_address(IP)
+except ValueError:
+    IP = "127.0.0.1"
+PORT = int(input("Nhap PORT: "))
+if PORT < 0 or PORT > 65535:
+    PORT = 5000
 
-    # gửi rồi nhận
+def recv_loop(sock):
     while True:
-        message = input("client: ")
-        if message.lower() == 'quit':
+        msg = protocol.read_msg(sock)
+        if msg is None:
+            print("Client Disconnected")
             break
-
-        client_socket.sendall(message.encode('utf-8'))
-
-        # nhận tin từhost
-        data = client_socket.recv(1024)
-        if not data:
-            print("host disconnect.")
-            break
-
-
-        print(f"host: {data.decode('utf-8')}")
-
-except Exception as e:
-    print(f"lỗi: {e}")
-
-finally:
-
-    client_socket.close()
-    print("close.")
+        print(f"\nClient: {msg}")
+        print("Host: ",end="",flush=True)
+host_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+host_socket.bind((IP,PORT))
+host_socket.listen(1)
+print("Waiting to connect...")
+conn,addr = host_socket.accept()
+print("Client connected: ",addr)
+recv_thread = threading.Thread(target=recv_loop,args=(conn,))
+recv_thread.daemon = True
+recv_thread.start()
+while True:
+    msg = input("Host: ")
+    if msg == "quit":
+        break
+    protocol.send_msg(conn, msg)
+conn.close()
+host_socket.close()
