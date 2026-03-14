@@ -8,7 +8,7 @@ try:
 except ValueError:
     IP = "127.0.0.1"
 PORT = int(input("Nhap PORT: "))
-if PORT < 0 and PORT > 65535:
+if PORT < 0 or PORT > 65535:
     PORT = 5000
 def recv_loop(sock):
     while True:
