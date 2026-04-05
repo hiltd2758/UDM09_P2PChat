@@ -65,3 +65,5 @@ def recvall(sock: socket.socket, n: int) -> bytes | None:
             return None
         buffer += chunk
     return buffer
+
+# --- End of P5a ---
