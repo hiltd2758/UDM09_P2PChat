@@ -34,4 +34,16 @@ def decode_frame(sock: socket.socket) -> str | None:
 
 def recvall(sock: socket.socket, n: int) -> bytes | None:
     """Read exactly n bytes, handling timeouts and disconnections."""
-    pass
+    buffer = b""
+    while len(buffer) < n:
+        try:
+            chunk = sock.recv(n - len(buffer))
+        except socket.timeout:
+            continue
+        except (OSError, ConnectionResetError):
+            return None
+            
+        if not chunk:
+            return None
+        buffer += chunk
+    return buffer
