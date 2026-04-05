@@ -32,7 +32,23 @@ def encode_frame(text: str) -> bytes:
 
 def decode_frame(sock: socket.socket) -> str | None:
     """Decode network packet, returns None and handles disconnection smoothly."""
-    pass
+    header = recvall(sock, 4)
+    if header is None:
+        return None
+    length = int.from_bytes(header, "big")
+    if length == 0:
+        return ""
+    if length > MAX_MESSAGE_LENGTH:
+        return None
+        
+    payload = recvall(sock, length)
+    if payload is None:
+        return None
+        
+    try:
+        return payload.decode("utf-8")
+    except UnicodeDecodeError:
+        return None
 
 def recvall(sock: socket.socket, n: int) -> bytes | None:
     """Read exactly n bytes, handling timeouts and disconnections."""
