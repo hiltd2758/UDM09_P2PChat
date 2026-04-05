@@ -26,7 +26,9 @@ MAX_MESSAGE_LENGTH = 1048576
 
 def encode_frame(text: str) -> bytes:
     """Implement packet format: [4 byte big-endian length][UTF-8 payload]"""
-    pass
+    payload = text.encode("utf-8")
+    header = len(payload).to_bytes(4, "big")
+    return header + payload
 
 def decode_frame(sock: socket.socket) -> str | None:
     """Decode network packet, returns None and handles disconnection smoothly."""
