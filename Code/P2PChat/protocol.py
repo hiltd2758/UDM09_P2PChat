@@ -1,4 +1,3 @@
-#protocol.py
 import struct
 from enum import Enum
 
@@ -8,6 +7,7 @@ RECV_TIMEOUT       = None
 SEND_TIMEOUT       = 5
 HEARTBEAT_INTERVAL = 30
 
+
 class PeerStatus(Enum):
     CONNECTING   = "⏳ Đang kết nối"
     CONNECTED    = "🟢 Đã kết nối"
@@ -15,9 +15,11 @@ class PeerStatus(Enum):
     ERROR        = "❌ Lỗi"
     TIMEOUT      = "⏱ Timeout"
 
+
 def pack_message(text: str) -> bytes:
     data = text.encode("utf-8")
     return struct.pack(">I", len(data)) + data
+
 
 def recv_exact(sock, n: int) -> bytes | None:
     buf = b""
@@ -30,6 +32,7 @@ def recv_exact(sock, n: int) -> bytes | None:
             return None
         buf += chunk
     return buf
+
 
 def recv_message(sock) -> str | None:
     header = recv_exact(sock, 4)
