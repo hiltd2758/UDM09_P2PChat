@@ -64,4 +64,3 @@ class P2PNode:
                 info.sock.close()
             except OSError:
                 pass
-        time.sleep(0.3)
