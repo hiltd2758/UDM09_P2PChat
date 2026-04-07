@@ -34,10 +34,10 @@ class P2PNode:
         self.peers: dict[str, PeerInfo] = {}    # Quản lý danh sách kết nối
         self.lock    = threading.Lock()         # Khóa để tránh xung đột đa luồng
         self.running = False
-    def get_peers(self) -> dict[str, PeerStatus]:
+    def get_peers(self) -> dict[str, str]:
         """Lấy danh sách nhanh các peer và trạng thái để hiển thị lên Listbox"""
         with self.lock:
-            return {addr: info.status for addr, info in self.peers.items()}
+            return {addr: info.status.value for addr, info in self.peers.items()}
     def get_peer_stats(self, peer_addr: str) -> dict | None:
         """Truy xuất thống kê chi tiết cho bảng thông tin bên phải giao diện"""
         with self.lock:
