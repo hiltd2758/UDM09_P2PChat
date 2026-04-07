@@ -2,15 +2,8 @@ import socket
 import threading        
 import time           
 from enum import Enum   
+from protocol import PeerStatus 
 
-
-class PeerStatus(Enum):
-    """Định nghĩa các trạng thái kết nối (Dùng cho get_peers)"""
-    CONNECTING  = "⏳ Đang kết nối"
-    CONNECTED   = "🟢 Đã kết nối"
-    DISCONNECTED= "🔴 Đã ngắt"
-    ERROR       = "❌ Lỗi"
-    TIMEOUT     = "⏱ Timeout"
 class PeerInfo:
     """Cấu trúc lưu trữ thông tin của một node đối phương"""
     __slots__ = ("sock", "status", "connected_at", "messages_sent", "messages_recv")
@@ -34,7 +27,7 @@ class P2PNode:
         self.peers: dict[str, PeerInfo] = {}    # Quản lý danh sách kết nối
         self.lock    = threading.Lock()         # Khóa để tránh xung đột đa luồng
         self.running = False
-    def get_peers(self) -> dict[str, str]:
+    def get_peers(self) -> dict[str, PeerStatus]:
         """Lấy danh sách nhanh các peer và trạng thái để hiển thị lên Listbox"""
         with self.lock:
             return {addr: info.status.value for addr, info in self.peers.items()}
@@ -64,3 +57,4 @@ class P2PNode:
                 info.sock.close()
             except OSError:
                 pass
+        time.sleep(0.3)
