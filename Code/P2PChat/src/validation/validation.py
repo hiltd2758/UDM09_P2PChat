@@ -39,5 +39,5 @@ def validate_port(port_str: str) -> tuple[bool, int, str]:
     if port < 1 or port > 65535:
         return False, 0, f"Port phải từ 1–65535 (nhập: {port})"
     if port < 1024:
-        return True, port, f"⚠️ Port {port} là port hệ thống, cần quyền admin"
+        return True, port, f"Port {port} là port hệ thống, cần quyền admin"
     return True, port, ""
