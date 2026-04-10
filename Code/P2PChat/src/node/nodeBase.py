@@ -2,7 +2,7 @@ import socket
 import threading        
 import time           
 from enum import Enum   
-from protocol import PeerStatus 
+from Code.P2PChat.src.protocol import PeerStatus 
 
 class PeerInfo:
     """Cấu trúc lưu trữ thông tin của một node đối phương"""
