@@ -1,9 +1,5 @@
 import tkinter as tk
-from tkinter import scrolledtext, ttk
-
-from ..validation.validation import validate_ip, validate_port 
-
-# ============ MÀU SẮC ============
+from tkinter import scrolledtext
 
 STATUS_COLORS = {
     "CONNECTING":   "#f9e2af",
@@ -22,29 +18,19 @@ LOG_COLORS = {
 }
 
 
-# ============ GIAO DIỆN CHÍNH ============
-
 class ChatApp(tk.Tk):
-    """
-    Lớp giao diện chính — chỉ chứa layout và widget.
-    Callback và logic được TV6 triển khai trong gui/logic.py.
-    """
-
     def __init__(self, port: int = 12000):
         super().__init__()
         self.title(f"💬 P2P Chat v2.0  —  Port {port}")
         self.geometry("900x650")
         self.minsize(700, 500)
         self.configure(bg="#1e1e2e")
-
         self.port = port
-
         self._build_ui()
         self.protocol("WM_DELETE_WINDOW", self._on_close)
 
     def _build_ui(self):
-
-        # ── Thanh kết nối (trên cùng) ──
+        # ── Thanh kết nối ──
         bar = tk.Frame(self, bg="#181825", pady=8)
         bar.pack(fill="x")
 
@@ -87,7 +73,6 @@ class ChatApp(tk.Tk):
         main = tk.Frame(self, bg="#1e1e2e")
         main.pack(fill="both", expand=True, padx=8, pady=(6, 4))
 
-        # Chat log (trái)
         chat_frame = tk.Frame(main, bg="#1e1e2e")
         chat_frame.pack(side="left", fill="both", expand=True)
 
@@ -102,11 +87,9 @@ class ChatApp(tk.Tk):
             relief="flat", bd=0, wrap="word"
         )
         self.chat.pack(fill="both", expand=True)
-
         for key, color in LOG_COLORS.items():
             self.chat.tag_config(key, foreground=color)
 
-        # Panel peers (phải)
         right = tk.Frame(main, bg="#1e1e2e", width=200)
         right.pack(side="right", fill="y", padx=(10, 0))
         right.pack_propagate(False)
@@ -118,8 +101,7 @@ class ChatApp(tk.Tk):
         list_frame = tk.Frame(right, bg="#181825")
         list_frame.pack(fill="both", expand=True)
 
-        scrollbar = tk.Scrollbar(list_frame, bg="#313145",
-                                  troughcolor="#181825")
+        scrollbar = tk.Scrollbar(list_frame, bg="#313145", troughcolor="#181825")
         scrollbar.pack(side="right", fill="y")
 
         self.peer_list = tk.Listbox(
@@ -178,7 +160,7 @@ class ChatApp(tk.Tk):
                   relief="flat", padx=10, pady=4,
                   cursor="hand2").pack(side="left", padx=3)
 
-        # ── Thanh trạng thái (dưới cùng) ──
+        # ── Thanh trạng thái ──
         self.status_bar = tk.Label(
             self, text="🔄 Đang khởi động...",
             bg="#11111b", fg="#6c7086",
@@ -186,13 +168,12 @@ class ChatApp(tk.Tk):
         )
         self.status_bar.pack(fill="x", side="bottom")
 
-    # ── Placeholder — TV6 sẽ override trong logic.py ──
-
-    def _connect(self):          pass
-    def _disconnect(self):       pass
-    def _send(self):             pass
-    def _broadcast(self):        pass
-    def _refresh_peers(self):    pass
-    def _on_peer_select(self, event=None): pass
-    def _update_char_count(self, event=None): pass
-    def _on_close(self):         self.destroy()
+    # Placeholder — TV6 override trong logic.py
+    def _connect(self):                   pass
+    def _disconnect(self):                pass
+    def _send(self):                      pass
+    def _broadcast(self):                 pass
+    def _refresh_peers(self):             pass
+    def _on_peer_select(self, e=None):    pass
+    def _update_char_count(self, e=None): pass
+    def _on_close(self):                  self.destroy()
