@@ -1,6 +1,7 @@
 import socket
 import threading
-from Code.P2PChat.src.protocol import PeerStatus, CONNECT_TIMEOUT, RECV_TIMEOUT
+import time
+from protocol import PeerStatus, CONNECT_TIMEOUT
 from nodeBase import PeerInfo
 
 def connect_peer(self, host: str, port: int):
@@ -54,25 +55,58 @@ def connect_peer(self, host: str, port: int):
 
     threading.Thread(target=_do_connect, daemon=True, name=f"connect-{peer_addr}").start()
 
-def _handle_disconnect(self, peer_addr: str, err_status=PeerStatus.DISCONNECTED):
-    with self.lock:
-        if peer_addr not in self.peers:
+def disconnect_peer(node, peer_addr: str):
+    with node.lock:
+        info = node.peers.pop(peer_addr, None)
+
+    if info:
+        try:
+            info.sock.shutdown(socket.SHUT_RDWR)
+            info.sock.close()
+        except OSError:
+            pass
+        node.on_status(f"🔌 Đã ngắt kết nối với {peer_addr}", "info")
+        node.on_peer_update(peer_addr, PeerStatus.DISCONNECTED)
+    else:
+        node.on_status(f"⚠️ {peer_addr} không có trong danh sách", "warn")
+
+
+def get_peers(node) -> dict[str, PeerStatus]:
+    with node.lock:
+        return {addr: info.status for addr, info in node.peers.items()}
+
+
+def get_peer_stats(node, peer_addr: str) -> dict | None:
+    with node.lock:
+        info = node.peers.get(peer_addr)
+        if not info:
+            return None
+        uptime = int(time.time() - info.connected_at)
+        return {
+            "status": info.status,
+            "uptime": uptime,
+            "sent":   info.messages_sent,
+            "recv":   info.messages_recv,
+        }
+
+def _handle_disconnect(node, peer_addr: str,
+                        err_status: PeerStatus = PeerStatus.DISCONNECTED):
+    with node.lock:
+        if peer_addr not in node.peers:
             return
-        peer = self.peers[peer_addr]
-        
-        if peer.sock:
-            try:
-                peer.sock.shutdown(socket.SHUT_RDWR)
-            except OSError:
-                pass
-            try:
-                peer.sock.close()
-            except OSError:
-                pass
-                
-        del self.peers[peer_addr]
+        info = node.peers.pop(peer_addr)
+
+    if info.sock:
+        try:
+            info.sock.shutdown(socket.SHUT_RDWR)
+        except OSError:
+            pass
+        try:
+            info.sock.close()
+        except OSError:
+            pass
 
     if err_status == PeerStatus.DISCONNECTED:
-        self.on_status(f"🔴 Mất hoặc ngắt kết nối với {peer_addr}", "warning")
+        node.on_status(f"⚠️ {peer_addr} mất kết nối", "warn")
 
-    self.on_peer_update(peer_addr, err_status)
+    node.on_peer_update(peer_addr, err_status)

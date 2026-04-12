@@ -49,7 +49,7 @@ def _listen(self):
                 self.on_status(f"❌ Cổng {self.port} đã bị chiếm bởi ứng dụng khác", "error")
             elif e.errno == 13:
                 self.on_status(f"❌ Cổng {self.port}: thiếu quyền (cần chạy Administrator)", "error")
-            else:
+            else:   
                 self.on_status(f"❌ Lỗi server: {e}", "error")
         finally:
             if server:
