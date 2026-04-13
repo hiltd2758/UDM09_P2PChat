@@ -73,11 +73,12 @@ def disconnect_peer(node, peer_addr: str):
         info = node.peers.pop(peer_addr, None)
 
     if info:
-        try:
-            info.sock.shutdown(socket.SHUT_RDWR)
-            info.sock.close()
-        except OSError:
-            pass
+        if info.sock:
+            try:
+                info.sock.shutdown(socket.SHUT_RDWR)
+                info.sock.close()
+            except OSError:
+                pass
         node.on_status(f"🔌 Đã ngắt kết nối với {peer_addr}", "info")
         node.on_peer_update(peer_addr, PeerStatus.DISCONNECTED)
     else:
