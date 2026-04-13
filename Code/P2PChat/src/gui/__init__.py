@@ -1,0 +1,1 @@
+from gui.logic import ChatAppFull as ChatApp
