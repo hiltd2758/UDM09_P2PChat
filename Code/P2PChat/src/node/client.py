@@ -2,7 +2,7 @@ import socket
 import threading
 import time
 from protocol import PeerStatus, CONNECT_TIMEOUT, RECV_TIMEOUT
-from node.base import PeerInfo
+from nodeBase import PeerInfo
 
 
 def connect_peer(node, host: str, port: int):
