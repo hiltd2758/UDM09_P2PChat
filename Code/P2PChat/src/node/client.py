@@ -72,17 +72,17 @@ def disconnect_peer(node, peer_addr: str):
     with node.lock:
         info = node.peers.pop(peer_addr, None)
 
-    if info:
-        if info.sock:
-            try:
-                info.sock.shutdown(socket.SHUT_RDWR)
-                info.sock.close()
-            except OSError:
-                pass
-        node.on_status(f"🔌 Đã ngắt kết nối với {peer_addr}", "info")
-        node.on_peer_update(peer_addr, PeerStatus.DISCONNECTED)
-    else:
-        node.on_status(f"⚠️ {peer_addr} không có trong danh sách", "warn")
+        if info:
+            if info.sock:
+                try:
+                    info.sock.shutdown(socket.SHUT_RDWR)
+                    info.sock.close()
+                except OSError:
+                    pass
+            node.on_status(f"🔌 Đã ngắt kết nối với {peer_addr}", "info")
+            node.on_peer_update(peer_addr, PeerStatus.DISCONNECTED)
+        else:
+            node.on_status(f"⚠️ {peer_addr} không có trong danh sách", "warn")
 
 
 def get_peers(node) -> dict[str, PeerStatus]:
@@ -102,6 +102,7 @@ def get_peer_stats(node, peer_addr: str) -> dict | None:
             "sent":   info.messages_sent,
             "recv":   info.messages_recv,
         }
+
 
 def _handle_disconnect(node, peer_addr: str,
                         err_status: PeerStatus = PeerStatus.DISCONNECTED):
