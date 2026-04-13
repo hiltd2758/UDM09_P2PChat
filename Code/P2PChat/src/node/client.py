@@ -2,7 +2,7 @@ import socket
 import threading
 import time
 from protocol import PeerStatus, CONNECT_TIMEOUT, RECV_TIMEOUT
-from nodeBase import PeerInfo
+from node.nodeBase import PeerInfo
 
 
 def connect_peer(node, host: str, port: int):
@@ -59,7 +59,7 @@ def connect_peer(node, host: str, port: int):
 
         except OSError as e:
             node.on_status(f"❌ Lỗi kết nối tới {peer_addr}: {e}", "error")
-            _handle_disconnect(node, peer_addr, PeerStatus.ERROR)
+        _handle_disconnect(node, peer_addr, PeerStatus.ERROR)
 
     threading.Thread(
         target=_do_connect,

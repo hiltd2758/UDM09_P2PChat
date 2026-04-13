@@ -1,7 +1,7 @@
 import threading
 import socket
-from Code.P2PChat.src.protocol import PeerStatus
-from nodeBase import PeerInfo
+from protocol import PeerStatus
+from node.nodeBase import PeerInfo
 
 RECV_TIMEOUT = 5.0  # timeout in seconds for receiving data
 
