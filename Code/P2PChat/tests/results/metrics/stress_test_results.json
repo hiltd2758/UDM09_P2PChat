@@ -1,0 +1,17 @@
+{
+  "concurrent_connections": {
+    "duration": 25.350341081619263,
+    "avg_cpu": 1.0488095238095239,
+    "peak_memory": 19.64453125,
+    "messages_sent": 100,
+    "errors": 0
+  },
+  "message_flooding": {
+    "duration": 30.000587701797485,
+    "avg_cpu": 106.36083429895712,
+    "peak_memory": 19.64453125,
+    "messages_sent": 1446238,
+    "errors": 0,
+    "messages_per_second": 48207.933333333334
+  }
+}

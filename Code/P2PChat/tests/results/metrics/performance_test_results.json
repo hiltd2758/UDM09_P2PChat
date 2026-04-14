@@ -1,0 +1,35 @@
+{
+  "latency": {
+    "duration": 0.34909892082214355,
+    "avg_cpu": 19.125,
+    "peak_memory": 19.91015625,
+    "messages_sent": 500,
+    "errors": 0,
+    "avg_latency_ms": 0.11728525161743164,
+    "min_latency_ms": 0.04744529724121094,
+    "max_latency_ms": 1.8396377563476562,
+    "median_latency_ms": 0.08738040924072266,
+    "p95_latency_ms": 0.22745132446289062,
+    "p99_latency_ms": 0.3669261932373047
+  },
+  "throughput_scaling": {
+    "2": {
+      "duration": 0.0002353191375732422,
+      "throughput_msg_per_sec": 2549728.875379939,
+      "avg_cpu": 2.5555555555555554,
+      "peak_memory_mb": 20.03125
+    },
+    "5": {
+      "duration": 0.00024509429931640625,
+      "throughput_msg_per_sec": 2856043.579766537,
+      "avg_cpu": 0.7552147239263803,
+      "peak_memory_mb": 20.13671875
+    },
+    "10": {
+      "duration": 0.000194549560546875,
+      "throughput_msg_per_sec": 4112062.745098039,
+      "avg_cpu": 0.8315420560747663,
+      "peak_memory_mb": 20.2890625
+    }
+  }
+}

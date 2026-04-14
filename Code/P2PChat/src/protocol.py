@@ -2,7 +2,7 @@ import struct
 from enum import Enum
 
 MAX_MESSAGE_LENGTH = 10_000
-CONNECT_TIMEOUT    = 5
+CONNECT_TIMEOUT    = 30
 RECV_TIMEOUT       = None
 SEND_TIMEOUT       = 5
 HEARTBEAT_INTERVAL = 30
