@@ -3,7 +3,7 @@ import socket
 from protocol import PeerStatus
 from node.nodeBase import PeerInfo
 
-RECV_TIMEOUT = 5.0  # timeout in seconds for receiving data
+RECV_TIMEOUT = 20.0  # timeout in seconds for receiving data
 
 def start_server(self):
         self.running = True
