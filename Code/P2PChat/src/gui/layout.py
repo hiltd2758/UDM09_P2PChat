@@ -21,7 +21,7 @@ LOG_COLORS = {
 class ChatApp(tk.Tk):
     def __init__(self, port: int = 12000):
         super().__init__()
-        self.title(f"💬 P2P Chat v2.0  —  Port {port}")
+        self.title(f"💬 P2P Chat —  Port {port}")
         self.geometry("900x650")
         self.minsize(700, 500)
         self.configure(bg="#1e1e2e")
@@ -59,15 +59,18 @@ class ChatApp(tk.Tk):
         self.port_entry.pack(side="left", padx=(0, 10))
         self.port_entry.bind("<Return>", lambda e: self._connect())
 
-        tk.Button(bar, text="🔗 Kết nối", command=self._connect,
+        # FIX: lưu tham chiếu để disable/enable sau
+        self._connect_btn = tk.Button(bar, text="🔗 Kết nối", command=self._connect,
                   bg="#89b4fa", fg="#11111b", font=("Consolas", 9, "bold"),
                   relief="flat", padx=8, pady=3,
-                  cursor="hand2").pack(side="left", padx=3)
+                  cursor="hand2")
+        self._connect_btn.pack(side="left", padx=3)
 
-        tk.Button(bar, text="✂️ Ngắt", command=self._disconnect,
+        self._disconnect_btn = tk.Button(bar, text="✂️ Ngắt", command=self._disconnect,
                   bg="#f38ba8", fg="#11111b", font=("Consolas", 9, "bold"),
                   relief="flat", padx=8, pady=3,
-                  cursor="hand2").pack(side="left", padx=3)
+                  cursor="hand2")
+        self._disconnect_btn.pack(side="left", padx=3)
 
         # ── Khu vực chính ──
         main = tk.Frame(self, bg="#1e1e2e")
@@ -168,7 +171,22 @@ class ChatApp(tk.Tk):
         )
         self.status_bar.pack(fill="x", side="bottom")
 
-    # Placeholder — TV6 override trong logic.py
+        # FIX: khởi tạo trạng thái mặc định — chưa kết nối
+        self._set_connected_state(False)
+
+    # ── FIX: quản lý trạng thái UI ──
+    def _set_connected_state(self, connected: bool):
+        """Disable/enable connection fields dựa trên trạng thái kết nối.
+        Gọi từ logic.py sau khi connect thành công hoặc disconnect.
+        """
+        field_state = "disabled" if connected else "normal"
+        self.nick_entry.config(state=field_state)
+        self.ip_entry.config(state=field_state)
+        self.port_entry.config(state=field_state)
+        self._connect_btn.config(state="disabled" if connected else "normal")
+        self._disconnect_btn.config(state="normal" if connected else "disabled")
+
+    # Placeholder — được override trong logic.py
     def _connect(self):                   pass
     def _disconnect(self):                pass
     def _send(self):                      pass

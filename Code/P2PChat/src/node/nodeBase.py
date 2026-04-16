@@ -52,9 +52,9 @@ class P2PNode:
             self.peers.clear()
         for info in snapshot:
             try:
-                # Ngắt cả đọc và ghi trước khi đóng hẳn socket
-                info.sock.shutdown(socket.SHUT_RDWR)
-                info.sock.close()
+                if info.sock:
+                    info.sock.shutdown(socket.SHUT_RDWR)
+                    info.sock.close()
             except OSError:
-                pass
+                pass    
         time.sleep(0.3)
