@@ -69,6 +69,10 @@ class ChatAppFull(ChatApp):
         self.node.disconnect_peer(peer)
         self._refresh_peers()
 
+        peers = self.node.get_peers()
+        has_connected = any(s == PeerStatus.CONNECTED for s in peers.values())
+        self._set_connected_state(has_connected)
+
     # ── Gửi / Broadcast ──
 
     def _send(self):
@@ -95,7 +99,7 @@ class ChatAppFull(ChatApp):
 
         ok, err = self.node.send_to(peer, full)
         if ok:
-            self._log(f"→ {peer}  {full}", "me")
+            self._log(f"→ {full}", "me")
             self.msg_entry.delete(0, "end")
             self._update_char_count()
         else:
@@ -148,7 +152,7 @@ class ChatAppFull(ChatApp):
     # ── Callback từ Node ──
 
     def _on_message(self, peer: str, msg: str):
-        self.after(0, lambda: self._log(f"← {peer}  {msg}", "peer"))
+        self.after(0, lambda: self._log(f"← {msg}", "peer"))
         self.after(0, self._refresh_peers)
 
     def _on_status(self, msg: str, level: str = "info"):
@@ -162,6 +166,10 @@ class ChatAppFull(ChatApp):
             self.peer_status_map[peer_addr] = status
             self._refresh_peers()
             self._update_status_bar()
+
+            peers = self.node.get_peers()
+            has_connected = any(s == PeerStatus.CONNECTED for s in peers.values())
+            self._set_connected_state(has_connected)
         self.after(0, _do)
 
     # ── Cập nhật UI ──

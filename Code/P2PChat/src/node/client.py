@@ -24,6 +24,10 @@ def connect_peer(node, host: str, port: int):
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.settimeout(CONNECT_TIMEOUT)
             sock.connect((host, port))
+
+            # FIX: gửi handshake báo port lắng nghe thật của mình
+            sock.sendall(f"HELLO:{node.port}\n".encode())
+
             sock.settimeout(RECV_TIMEOUT)
 
             with node.lock:
